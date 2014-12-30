@@ -1,27 +1,41 @@
 {-# LANGUAGE TemplateHaskell #-}
 
+import RabbitTree
+
+import Control.Exception
 import Control.Monad
 import Test.QuickCheck
 import Test.QuickCheck.All
-import RabbitTree
+
+
+isMature :: RabbitHistory -> Bool
+isMature (Born h) = False
+isMature _ = True
+
+valid :: RabbitHistory -> Bool
+valid (ImaginaryHistory k) = k >= 0
+valid (Born h) = isMature h && valid h
+valid (Stayed h) = isMature h && valid h
+valid (Matured h) = not (isMature h) && valid h && matured h == Matured h
+
+assertValid h = assert (valid h) h
 
 instance Arbitrary RabbitHistory where
     -- Only generates valid histories.
-    arbitrary = oneof [
+    arbitrary = liftM assertValid $ oneof [
         liftM ImaginaryHistory (elements [0..5]),
         do h <- arbitrary
            elements $ down h
         ]
 
     -- Shrinking results should be valid histories.
-    shrink (Born h) = map Born $ shrink h
-    shrink (Stayed h) = [h] ++ (map Stayed $ shrink h)
-    shrink (Matured h) = map matured $ shrink h
-    shrink (ImaginaryHistory k) | k > 0 = [ImaginaryHistory (k - 1)]
-    shrink _ = []
+    shrink = map assertValid . shrink' where
+        shrink' (Born h) = map Born $ shrink' h
+        shrink' (Stayed h) = [h] ++ (map Stayed $ shrink' h)
+        shrink' (Matured h) = map matured $ shrink' h
+        shrink' (ImaginaryHistory k) | k > 0 = [ImaginaryHistory (k - 1)]
+        shrink' _ = []
 
-
-prop_history_is_valid h = valid h
 
 prop_up_undoes_down h = and [up h1 == h | h1 <- down h]
 

@@ -39,13 +39,3 @@ right (Born (Stayed h)) = matured (Born h)  -- (b)
 right (Born h)          = Stayed (right h)  -- (c')
 right (Matured h)       = Stayed (right h)  -- (c)
 right h = right (imagineHistory h)
-
-isMature :: RabbitHistory -> Bool
-isMature (Born h) = False
-isMature _ = True
-
-valid :: RabbitHistory -> Bool
-valid (ImaginaryHistory k) = k >= 0
-valid (Born h) = isMature h && valid h
-valid (Stayed h) = isMature h && valid h
-valid (Matured h) = not (isMature h) && valid h && matured h == Matured h
