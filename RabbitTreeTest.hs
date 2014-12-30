@@ -61,4 +61,4 @@ prop_neighbors_in_fifth_layer h =
         fifth_layer = iterate ((down =<<) $) [h] !! 5
 
 
-main = $quickCheckAll
+main = $forAllProperties (quickCheckWithResult stdArgs {maxSuccess = 1000})
