@@ -5,12 +5,8 @@ import RabbitTree
 import Control.Exception
 import Control.Monad
 import Test.QuickCheck
-import Test.QuickCheck.All
+import Test.QuickCheck.All()
 
-
-isMature :: RabbitHistory -> Bool
-isMature (Born h) = False
-isMature _ = True
 
 valid :: RabbitHistory -> Bool
 valid (ImaginaryHistory k) = k >= 0

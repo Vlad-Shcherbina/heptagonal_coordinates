@@ -39,3 +39,7 @@ right (Born (Stayed h)) = matured (Born h)  -- (b)
 right (Born h)          = Stayed (right h)  -- (c')
 right (Matured h)       = Stayed (right h)  -- (c)
 right h = right (imagineHistory h)
+
+isMature :: RabbitHistory -> Bool
+isMature (Born _) = False
+isMature _ = True
