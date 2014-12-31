@@ -47,4 +47,8 @@ prop_three_heptagons_meet h =
         nextElementInCyclicList adj1 h2 === h
 
 
-main = $forAllProperties (quickCheckWithResult stdArgs {maxSuccess = 10000})
+main = $forAllProperties $ \prop -> do
+    result <-
+        quickCheckWithResult stdArgs {maxSuccess = 100000, chatty=False} prop
+    putStr $ output result
+    return result
