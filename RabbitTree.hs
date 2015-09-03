@@ -5,7 +5,7 @@ data RabbitHistory =
     Stayed RabbitHistory |
     Matured RabbitHistory |
     ImaginaryHistory Int
-    deriving (Show, Eq)
+    deriving (Show, Eq, Ord)
 
 imagineHistory :: RabbitHistory -> RabbitHistory
 imagineHistory (ImaginaryHistory k) =

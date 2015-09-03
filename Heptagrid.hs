@@ -3,7 +3,7 @@ module Heptagrid (Heptagon, origin, adjacent) where
 import RabbitTree
 
 data Heptagon = Heptagon RabbitHistory
-    deriving (Eq, Show)
+    deriving (Eq, Show, Ord)
 
 origin :: Heptagon
 origin = Heptagon (ImaginaryHistory 0)
