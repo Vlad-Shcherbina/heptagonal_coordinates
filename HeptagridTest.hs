@@ -25,7 +25,7 @@ elementsUnique xs = conjoin [
     i <- [0..length xs - 1], j <- [0..i - 1]]
 
 prop_adjacent_are_unique h =
-    elementsUnique $ adjacent h
+    elementsUnique $ h : adjacent h
 
 prop_adjacency_is_symmetric h =
     forAll (elements $ adjacent h) $ \h1 ->
